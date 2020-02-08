@@ -21,7 +21,7 @@ import std/math
 import ryu/common
 
 suite "common test":
-  test "decimalLength9":
+  test "decimal_length9":
     check 1'u == decimalLength9(0)
     check 1'u == decimalLength9(1)
     check 1'u == decimalLength9(9)
@@ -39,7 +39,7 @@ suite "common test":
     check 10 == ceil_log2pow5(4)
     check 8192 == ceil_log2pow5(3528)
 
-  test "log10Pow2":
+  test "log10pow2":
     check 0'u == log10Pow2(0)
     check 0'u == log10Pow2(1)
     check 0'u == log10Pow2(2)
@@ -47,7 +47,7 @@ suite "common test":
     check 1'u == log10Pow2(4)
     check 496'u == log10Pow2(1650)
 
-  test "log10Pow5":
+  test "log10pow5":
     check 0'u == log10Pow5(0)
     check 0'u == log10Pow5(1)
     check 1'u == log10Pow5(2)
@@ -75,9 +75,9 @@ suite "common test":
     buffer = ""
 
   test "float_to_bits":
-    check 0'u == floatToBits(0.0)
-    check 0x40490fdau == float_to_bits(3.1415926f)
+    check 0'u32 == floatToBits(0.0'f32)
+    check 0x40490fda'u32 == floatToBits(3.1415926'f32)
 
   test "double_to_bits":
-    check 0'u == doubleToBits(0.0)
-    check 0x400921FB54442D18'u == doubleToBits(3.1415926535897932384626433)
+    check 0'u64 == doubleToBits(0.0'f64)
+    check 0x400921FB54442D18'u64 == doubleToBits(3.1415926535897932384626433'f64)

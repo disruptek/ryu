@@ -29,16 +29,16 @@ proc decimalLength9*(v: uint32): uint32 {.inline.} =
   ## Function precondition: v is not a 10-digit number.
   # (f2s: 9 digits are sufficient for round-tripping.)
   # (d2fixed: We print 9-digit blocks.)
-  assert v < 1_000_000_000
-  if (v >= 100_000_000): return 9
-  if (v >= 10_000_000): return 8
-  if (v >= 1_000_000): return 7
-  if (v >= 100_000): return 6
-  if (v >= 10_000): return 5
-  if (v >= 1_000): return 4
-  if (v >= 100): return 3
-  if (v >= 10): return 2
-  return 1
+  assert v < 1_000_000_000'u32
+  if (v >= 100_000_000'u32): return 9
+  if (v >= 10_000_000'u32): return 8
+  if (v >= 1_000_000'u32): return 7
+  if (v >= 100_000'u32): return 6
+  if (v >= 10_000'u32): return 5
+  if (v >= 1_000'u32): return 4
+  if (v >= 100'u32): return 3
+  if (v >= 10'u32): return 2
+  return 1'u32
 
 proc log2pow5*(e: int32): int32 {.inline.} =
   ## Returns e == 0 ? 1 : [log_2(5^e)]; requires 0 <= e <= 3528.
@@ -92,9 +92,6 @@ proc copySpecialStr*(buff: var string; sign, exponent, mantissa: bool): int =
 
 proc floatToBits*(f: float32): uint32 {.inline.} =
   copyMem(addr result, unsafeAddr f, sizeof(float32))
-
-proc floatToBits*(f: float64): uint64 {.inline.} =
-  copyMem(addr result, unsafeAddr f, sizeof(float64))
 
 proc doubleToBits*(f: float64): uint64 {.inline.} =
   copyMem(addr result, unsafeAddr f, sizeof(float64))
