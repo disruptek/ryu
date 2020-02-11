@@ -58,15 +58,15 @@ suite "common test":
     var
       buffer: string
     check 3 == copySpecialStr(buffer, false, false, true)
-    check "NaN" == buffer
+    check "nan" == buffer
     buffer = ""
 
     check 8 == copySpecialStr(buffer, false, true, false)
-    check "Infinity" == buffer
+    check "inf" == buffer
     buffer = ""
 
     check 9 == copySpecialStr(buffer, true, true, false)
-    check "-Infinity" == buffer
+    check "-inf" == buffer
     buffer = ""
 
     check 4 == copySpecialStr(buffer, true, false, false)

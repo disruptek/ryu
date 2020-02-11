@@ -82,11 +82,11 @@ proc log10Pow5*(e: int32): uint32 {.inline.} =
 
 proc specialStr*(sign, exponent, mantissa: bool): string {.inline.} =
   if mantissa:
-    result = "NaN"
+    result = "nan"
   elif exponent:
-    result = if sign: "-Infinity" else: "Infinity"
+    result = if sign: "-inf" else: "inf"
   else:
-    result = if sign: "-0E0" else: "0E0"
+    result = if sign: "-0e0" else: "0E0"
 
 proc copySpecialStr*(buff: var string; sign, exponent, mantissa: bool): int =
   buff = specialStr(sign, exponent, mantissa)

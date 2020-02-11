@@ -32,9 +32,9 @@ suite "float to string":
     ASSERT_F2S("-0E0", -0.0)
     ASSERT_F2S("1E0", 1.0)
     ASSERT_F2S("-1E0", -1.0)
-    ASSERT_F2S("NaN", NAN)
-    ASSERT_F2S("Infinity", 0.3 / 0.0)
-    ASSERT_F2S("-Infinity", -0.3 / 0.0)
+    ASSERT_F2S("nan", NAN)
+    ASSERT_F2S("inf", 0.3 / 0.0)
+    ASSERT_F2S("-inf", -0.3 / 0.0)
 
 
   test "switch to subnormal":
