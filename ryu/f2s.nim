@@ -351,11 +351,14 @@ proc toChars*(v: FloatingDecimal32; sign: bool): string {.inline.} =
   var
     index = 0
     output: uint32 = v.mantissa
-    cstr: cstring = cast[cstring](alloc(16 + 1))
+
+  # it is what it is
+  result = newString(16)
+
   let
     olength: uint32 = decimalLength9(output)
   if sign:
-    cstr[index] = '-'
+    result[index] = '-'
     index.inc
 
   when defined(ryuDebug):
@@ -386,43 +389,43 @@ proc toChars*(v: FloatingDecimal32; sign: bool): string {.inline.} =
     let
       c0: uint32 = (c mod 100) shl 1
       c1: uint32 = (c div 100) shl 1
-    cstr[index + olength.int - i.int - 1] = ryuDigitTable[c0 + 0]
-    cstr[index + olength.int - i.int - 0] = ryuDigitTable[c0 + 1]
-    cstr[index + olength.int - i.int - 3] = ryuDigitTable[c1 + 0]
-    cstr[index + olength.int - i.int - 2] = ryuDigitTable[c1 + 1]
+    result[index + olength.int - i.int - 1] = ryuDigitTable[c0 + 0]
+    result[index + olength.int - i.int - 0] = ryuDigitTable[c0 + 1]
+    result[index + olength.int - i.int - 3] = ryuDigitTable[c1 + 0]
+    result[index + olength.int - i.int - 2] = ryuDigitTable[c1 + 1]
     i += 4
 
   if output >= 100'u32:
     let c: uint32 = (output mod 100) shl 1
     output = output div 100
-    cstr[index + olength.int - i.int - 1] = ryuDigitTable[c + 0]
-    cstr[index + olength.int - i.int - 0] = ryuDigitTable[c + 1]
+    result[index + olength.int - i.int - 1] = ryuDigitTable[c + 0]
+    result[index + olength.int - i.int - 0] = ryuDigitTable[c + 1]
     i += 2
 
   if output >= 10'u32:
     let c: uint32 = output shl 1
     # We can't use memcpy here: the decimal dot goes between these two
     # digits.
-    cstr[index + olength.int - i.int] = ryuDigitTable[c + 1]
-    cstr[index] = ryuDigitTable[c]
+    result[index + olength.int - i.int] = ryuDigitTable[c + 1]
+    result[index] = ryuDigitTable[c]
   else:
-    cstr[index] = chr('0'.ord + output.int)
+    result[index] = chr('0'.ord + output.int)
 
   # Print decimal point if needed.
   if olength > 1'u32:
-    cstr[index + 1] = '.'
+    result[index + 1] = '.'
     index += olength.int + 1
   else:
     index.inc
 
   # Print the exponent.
-  cstr[index] = 'E'
+  result[index] = 'E'
   index.inc
 
   var
     exp: int32 = v.exponent + olength.int32 - 1
   if exp < 0:
-    cstr[index] = '-'
+    result[index] = '-'
     index.inc
     exp = -exp
 
@@ -431,19 +434,15 @@ proc toChars*(v: FloatingDecimal32; sign: bool): string {.inline.} =
     #    '0', '0'
     #    '0', '1'
     #    '0', '2'
-    cstr[index + 0] = ryuDigitTable[2 * exp + 0]
-    cstr[index + 1] = ryuDigitTable[2 * exp + 1]
+    result[index + 0] = ryuDigitTable[2 * exp + 0]
+    result[index + 1] = ryuDigitTable[2 * exp + 1]
     index += 2
   else:
-    cstr[index] = chr('0'.ord + exp)
+    result[index] = chr('0'.ord + exp)
     index.inc
 
-  # add the terminator
-  cstr[index] = '\0'
-  # convert to string
-  result = $cstr
-  # free the cstring
-  dealloc cstr
+  # set the result length
+  result.setLen index
 
 proc f2s*(f: float): string =
   # Step 1: Decode the floating-point number, and unify normalized and
