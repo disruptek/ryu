@@ -15,8 +15,6 @@
 ## is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
 ## KIND, either express or implied.
 
-import std/strutils
-
 #[
 
 FIXME: define this if'en we needs it
