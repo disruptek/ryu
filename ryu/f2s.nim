@@ -119,7 +119,7 @@ proc mulPow5InvDivPow2*(m: uint32; q: uint32; j: int32): uint32 {.inline.} =
     # the added 1 that's already stored in the table never overflows into
     # the upper 64 bits.
     var
-      pow5: seq[uint64] = @[0'u64, 0'u64]
+      pow5: DubDub64
     doubleComputeInvPow5(q, pow5)
     result = mulShift32(m, pow5[1] + 1, j)
   else:
@@ -129,9 +129,9 @@ proc mulPow5DivPow2*(m: uint32; i: uint32; j: int32): uint32 {.inline.} =
   when defined(ryuFloatFullTable):
     result = mulShift32(m, ryuFloatPow5Split[i], j)
   elif defined(ryuOptimizeSize):
-    let
-      pow5: seq[uint64] = @[0'u64, 0'u64]
-    doubleComputePow5(q, pow5)
+    var
+      pow5: DubDub64
+    doubleComputePow5(i, pow5)
     result = mulShift32(m, pow5[1], j)
   else:
     when defined(ryuDebug):
