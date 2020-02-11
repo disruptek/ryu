@@ -16,7 +16,6 @@
 ## KIND, either express or implied.
 
 import std/unittest
-import std/math
 
 import ryu/common
 
