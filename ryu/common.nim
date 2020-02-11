@@ -18,6 +18,10 @@
 when defined(ryuDebug):
   import strutils
 
+# used in the tables, etc.
+type
+  DubDub64* = tuple[a: uint64; b: uint64]
+
 #[
 
 FIXME: define this if'en we needs it
