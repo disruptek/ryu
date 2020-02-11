@@ -61,16 +61,16 @@ suite "common test":
     check "nan" == buffer
     buffer = ""
 
-    check 8 == copySpecialStr(buffer, false, true, false)
+    check 3 == copySpecialStr(buffer, false, true, false)
     check "inf" == buffer
     buffer = ""
 
-    check 9 == copySpecialStr(buffer, true, true, false)
+    check 4 == copySpecialStr(buffer, true, true, false)
     check "-inf" == buffer
     buffer = ""
 
     check 4 == copySpecialStr(buffer, true, false, false)
-    check "-0E0" == buffer
+    check "-0e0" == buffer
     buffer = ""
 
   test "float_to_bits":

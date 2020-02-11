@@ -86,7 +86,7 @@ proc specialStr*(sign, exponent, mantissa: bool): string {.inline.} =
   elif exponent:
     result = if sign: "-inf" else: "inf"
   else:
-    result = if sign: "-0e0" else: "0E0"
+    result = if sign: "-0e0" else: "0e0"
 
 proc copySpecialStr*(buff: var string; sign, exponent, mantissa: bool): int =
   buff = specialStr(sign, exponent, mantissa)

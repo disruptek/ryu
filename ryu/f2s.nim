@@ -419,7 +419,7 @@ proc toChars*(v: FloatingDecimal32; sign: bool): string {.inline.} =
     index.inc
 
   # Print the exponent.
-  result[index] = 'E'
+  result[index] = 'e'
   index.inc
 
   var
