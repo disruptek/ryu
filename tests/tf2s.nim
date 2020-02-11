@@ -27,19 +27,10 @@ template ASSERT_F2S(s: string; f: float | float32 | float64) =
   check f2s(f) == s
 
 suite "float to string":
-  test "really basic":
-    check f2s(0.0'f32) == "0E0"
-    check f2s(-0.0'f32) == "-0E0"
-    check f2s(0.0 / 0.0) == "NaN"
-    check f2s(0.3 / 0.0) == "Infinity"
-    check f2s(-0.3 / 0.0) == "-Infinity"
+  test "basic":
     ASSERT_F2S("0E0", 0.0)
     ASSERT_F2S("-0E0", -0.0)
-
-  test "basically broken":
     ASSERT_F2S("1E0", 1.0)
-
-  test "basic":
     ASSERT_F2S("-1E0", -1.0)
     ASSERT_F2S("NaN", NAN)
     ASSERT_F2S("Infinity", 0.3 / 0.0)
@@ -47,21 +38,15 @@ suite "float to string":
 
 
   test "switch to subnormal":
-    check f2s(1.1754944E-38'f32) == "1.1754944E-38"
     ASSERT_F2S("1.1754944E-38", 1.1754944E-38f)
 
   test "min and max":
-    check int32Bits2Float(0x7f7fffff).f2s == "3.4028235E38"
-    check int32Bits2Float(1).f2s == "1E-45"
     ASSERT_F2S("3.4028235E38", int32Bits2Float(0x7f7fffff))
     ASSERT_F2S("1E-45", int32Bits2Float(1))
 
   # Check that we return the exact boundary if it is the shortest
   # representation, but only if the original floating point number is even.
   test "boundary round even":
-    check f2s(3.355445E7) == "3.355445E7"
-    check f2s(8.999999E9) == "9E9"
-    check f2s(3.4366717E10) == "3.436672E10"
     ASSERT_F2S("3.355445E7", 3.355445E7f)
     ASSERT_F2S("9E9", 8.999999E9f)
     ASSERT_F2S("3.436672E10", 3.4366717E10f)
@@ -70,17 +55,11 @@ suite "float to string":
   # then we round to even. It seems like this only makes a difference if the
   # last two digits are ...2|5 or ...7|5, and we cut off the 5.
   test "extract value round even":
-    check f2s(3.0540412E5) == "3.0540412E5"
-    check f2s(8.0990312E3) == "8.0990312E3"
     ASSERT_F2S("3.0540412E5", 3.0540412E5f)
     ASSERT_F2S("8.0990312E3", 8.0990312E3f)
 
   test "lots of trailing zeros":
     # Pattern for the first test: 00111001100000000000000000000000
-    check f2s(2.4414062E-4) == "2.4414062E-4"
-    check f2s(2.4414062E-3) == "2.4414062E-3"
-    check f2s(4.3945312E-3) == "4.3945312E-3"
-    check f2s(6.3476562E-3) == "6.3476562E-3"
     ASSERT_F2S("2.4414062E-4", 2.4414062E-4f)
     ASSERT_F2S("2.4414062E-3", 2.4414062E-3f)
     ASSERT_F2S("4.3945312E-3", 4.3945312E-3f)
