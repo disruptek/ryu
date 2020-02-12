@@ -58,19 +58,19 @@ suite "common test":
     var
       buffer: string
     check 3 == copySpecialStr(buffer, false, false, true)
-    check "NaN" == buffer
+    check "nan" == buffer
     buffer = ""
 
-    check 8 == copySpecialStr(buffer, false, true, false)
-    check "Infinity" == buffer
+    check 3 == copySpecialStr(buffer, false, true, false)
+    check "inf" == buffer
     buffer = ""
 
-    check 9 == copySpecialStr(buffer, true, true, false)
-    check "-Infinity" == buffer
+    check 4 == copySpecialStr(buffer, true, true, false)
+    check "-inf" == buffer
     buffer = ""
 
     check 4 == copySpecialStr(buffer, true, false, false)
-    check "-0E0" == buffer
+    check "-0e0" == buffer
     buffer = ""
 
   test "float_to_bits":
