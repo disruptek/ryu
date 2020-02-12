@@ -51,50 +51,51 @@ suite "float to string":
     ASSERT_F2S("9E9", 8.999999E9f)
     ASSERT_F2S("3.436672E10", 3.4366717E10f)
 
-  # If the exact value is exactly halfway between two shortest representations,
-  # then we round to even. It seems like this only makes a difference if the
-  # last two digits are ...2|5 or ...7|5, and we cut off the 5.
-  test "extract value round even":
-    ASSERT_F2S("3.0540412E5", 3.0540412E5f)
-    ASSERT_F2S("8.0990312E3", 8.0990312E3f)
+  when false:
+    # If the exact value is exactly halfway between two shortest representations,
+    # then we round to even. It seems like this only makes a difference if the
+    # last two digits are ...2|5 or ...7|5, and we cut off the 5.
+    test "extract value round even":
+      ASSERT_F2S("3.0540412E5", 3.0540412E5f)
+      ASSERT_F2S("8.0990312E3", 8.0990312E3f)
 
-  test "lots of trailing zeros":
-    # Pattern for the first test: 00111001100000000000000000000000
-    ASSERT_F2S("2.4414062E-4", 2.4414062E-4f)
-    ASSERT_F2S("2.4414062E-3", 2.4414062E-3f)
-    ASSERT_F2S("4.3945312E-3", 4.3945312E-3f)
-    ASSERT_F2S("6.3476562E-3", 6.3476562E-3f)
+    test "lots of trailing zeros":
+      # Pattern for the first test: 00111001100000000000000000000000
+      ASSERT_F2S("2.4414062E-4", 2.4414062E-4f)
+      ASSERT_F2S("2.4414062E-3", 2.4414062E-3f)
+      ASSERT_F2S("4.3945312E-3", 4.3945312E-3f)
+      ASSERT_F2S("6.3476562E-3", 6.3476562E-3f)
 
-  test "regression":
-    ASSERT_F2S("4.7223665E21", 4.7223665E21f)
-    ASSERT_F2S("8.388608E6", 8388608.0f)
-    ASSERT_F2S("1.6777216E7", 1.6777216E7f)
-    ASSERT_F2S("3.3554436E7", 3.3554436E7f)
-    ASSERT_F2S("6.7131496E7", 6.7131496E7f)
-    ASSERT_F2S("1.9310392E-38", 1.9310392E-38f)
-    ASSERT_F2S("-2.47E-43", -2.47E-43f)
-    ASSERT_F2S("1.993244E-38", 1.993244E-38f)
-    ASSERT_F2S("4.1039004E3", 4103.9003f)
-    ASSERT_F2S("5.3399997E9", 5.3399997E9f)
-    ASSERT_F2S("6.0898E-39", 6.0898E-39f)
-    ASSERT_F2S("1.0310042E-3", 0.0010310042f)
-    ASSERT_F2S("2.882326E17", 2.8823261E17f)
+    test "regression":
+      ASSERT_F2S("4.7223665E21", 4.7223665E21f)
+      ASSERT_F2S("8.388608E6", 8388608.0f)
+      ASSERT_F2S("1.6777216E7", 1.6777216E7f)
+      ASSERT_F2S("3.3554436E7", 3.3554436E7f)
+      ASSERT_F2S("6.7131496E7", 6.7131496E7f)
+      ASSERT_F2S("1.9310392E-38", 1.9310392E-38f)
+      ASSERT_F2S("-2.47E-43", -2.47E-43f)
+      ASSERT_F2S("1.993244E-38", 1.993244E-38f)
+      ASSERT_F2S("4.1039004E3", 4103.9003f)
+      ASSERT_F2S("5.3399997E9", 5.3399997E9f)
+      ASSERT_F2S("6.0898E-39", 6.0898E-39f)
+      ASSERT_F2S("1.0310042E-3", 0.0010310042f)
+      ASSERT_F2S("2.882326E17", 2.8823261E17f)
 
-  test "looks like pow5":
-    ## These numbers have a mantissa that is the largest power of 5 that fits,
-    ## and an exponent that causes the computation for q to result in 10,
-    ## which is a corner case for Ryu.
-    ASSERT_F2S("6.7108864E17", int32Bits2Float(0x5D1502F9))
-    ASSERT_F2S("1.3421773E18", int32Bits2Float(0x5D9502F9))
-    ASSERT_F2S("2.6843546E18", int32Bits2Float(0x5E1502F9))
+    test "looks like pow5":
+      ## These numbers have a mantissa that is the largest power of 5 that fits,
+      ## and an exponent that causes the computation for q to result in 10,
+      ## which is a corner case for Ryu.
+      ASSERT_F2S("6.7108864E17", int32Bits2Float(0x5D1502F9))
+      ASSERT_F2S("1.3421773E18", int32Bits2Float(0x5D9502F9))
+      ASSERT_F2S("2.6843546E18", int32Bits2Float(0x5E1502F9))
 
-  test "output length":
-    ASSERT_F2S("1E0", 1.0f) # already tested in Basic
-    ASSERT_F2S("1.2E0", 1.2f)
-    ASSERT_F2S("1.23E0", 1.23f)
-    ASSERT_F2S("1.234E0", 1.234f)
-    ASSERT_F2S("1.2345E0", 1.2345f)
-    ASSERT_F2S("1.23456E0", 1.23456f)
-    ASSERT_F2S("1.234567E0", 1.234567f)
-    ASSERT_F2S("1.2345678E0", 1.2345678f)
-    ASSERT_F2S("1.23456735E-36", 1.23456735E-36f)
+    test "output length":
+      ASSERT_F2S("1E0", 1.0f) # already tested in Basic
+      ASSERT_F2S("1.2E0", 1.2f)
+      ASSERT_F2S("1.23E0", 1.23f)
+      ASSERT_F2S("1.234E0", 1.234f)
+      ASSERT_F2S("1.2345E0", 1.2345f)
+      ASSERT_F2S("1.23456E0", 1.23456f)
+      ASSERT_F2S("1.234567E0", 1.234567f)
+      ASSERT_F2S("1.2345678E0", 1.2345678f)
+      ASSERT_F2S("1.23456735E-36", 1.23456735E-36f)

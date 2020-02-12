@@ -104,8 +104,6 @@ proc mulShift32*(m: uint32; factor: uint64; shift: int32): uint32 {.inline.} =
     let
       sum: uint64 = (bits0 shr 32) + bits1
       shiftedSum: uint64 = sum shr (shift - 32)
-    if shiftedSum > uint64(uint32.high):
-      raise newException(AssertionError, "shiftedSum of $# > $#; sum was $#; shift of $#" % [$shiftedSum, $uint32.high, $sum, $shift])
     assert shiftedSum <= uint32.high
     result = shiftedSum.uint32
 
@@ -190,13 +188,18 @@ proc f2d*(ieeeMantissa: uint32; ieeeExponent: uint32): FloatingDecimal32
     let
       k: int32 = ryuFloatPow5InvBitCount.int32 + pow5bits(q.int32) - 1
       i: int32 = -e2 + q.int32 + k
-    vr = mulPow5InvDivPow2(mv, q, i)
+    when defined(ryuDebug):
+      echo "MP+=$#\nMV =$#\nMM-=$#" % [$mp, $mv, $mm]
+    # mp -> vp
     vp = mulPow5InvDivPow2(mp, q, i)
+    # mv -> vr
+    vr = mulPow5InvDivPow2(mv, q, i)
+    # mm -> vm
     vm = mulPow5InvDivPow2(mm, q, i)
 
     when defined(ryuDebug):
       echo "$# * 2^$# / 10^$#" % [$mv, $e2, $q]
-      echo "V+=$#\nV =$#\nV-=$#" % [$vp, $vr, $vm]
+      echo "VP+=$#\nVR =$#\nVM-=$#" % [$vp, $vr, $vm]
 
     if q != 0 and (vp - 1) div 10'u32 <= vm div 10'u32:
       # We need to know one removed digit even if we are not going to loop
