@@ -12,4 +12,4 @@ $ nimble test
 ```
 
 ## License
-MIT
+As per the original, see LICENSE files within.
