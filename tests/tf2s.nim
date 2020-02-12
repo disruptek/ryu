@@ -98,3 +98,10 @@ suite "float to string":
     ASSERT_F2S("1.234567e0", 1.234567f)
     ASSERT_F2S("1.2345678e0", 1.2345678f)
     ASSERT_F2S("1.23456735e-36", 1.23456735e-36f)
+
+  test "multiple f2s on same output string":
+    var ret: string
+    ret.f2s 1.0
+    ret.add "|"
+    ret.f2s 2.0
+    check ret == "1e0|2e0"
