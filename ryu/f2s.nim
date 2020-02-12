@@ -84,6 +84,7 @@ proc mulShift32*(m: uint32; factor: uint64; shift: int32): uint32 {.inline.} =
     bits0: uint64 = m.uint64 * factorLo
     bits1: uint64 = m.uint64 * factorHi
   when defined(ryuDebug):
+    echo "m: $# factor: $# shift: $#" % [$m, $factor, $shift]
     echo "factorLo $# factorHi $# bits0 $# bits1 $# " % [$factorLo, $factorHi, $bits0, $bits1]
 
   when defined(ryu32BitPlatform):
