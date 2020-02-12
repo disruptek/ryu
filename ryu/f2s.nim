@@ -346,14 +346,13 @@ proc f2d*(ieeeMantissa: uint32; ieeeExponent: uint32): FloatingDecimal32
 
   result = FloatingDecimal32(exponent: exp, mantissa: output)
 
-proc toChars*(v: FloatingDecimal32; sign: bool): string {.inline.} =
+proc toChars*(result: var string, v: FloatingDecimal32; sign: bool) {.inline.} =
   # Step 5: Print the decimal representation.
   var
-    index = 0
+    index = result.len
     output: uint32 = v.mantissa
 
-  # it is what it is
-  result = newString(16)
+  result.setLen index + 16
 
   let
     olength: uint32 = decimalLength9(output)
@@ -444,7 +443,7 @@ proc toChars*(v: FloatingDecimal32; sign: bool): string {.inline.} =
   # set the result length
   result.setLen index
 
-proc f2s*(f: float): string =
+proc f2s*(result: var string, f: float) =
   # Step 1: Decode the floating-point number, and unify normalized and
   # subnormal cases.
   let
@@ -462,6 +461,9 @@ proc f2s*(f: float): string =
   else:
     let
       v = f2d(ieeeMantissa, ieeeExponent)
-    result = toChars(v, ieeeSign)
+    toChars(result, v, ieeeSign)
   when defined(ryuDebug):
     echo "---> F2S OUTPUT --->", result, "<---"
+
+proc f2s*(f: float): string =
+  f2s(result, f)
